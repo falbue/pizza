@@ -1,7 +1,7 @@
 import TelegramTextApp
 from api import shops
 from api.request import request
-from TelegramTextApp.utils.database import SQL_request as SQL  # type: ignore
+from TelegramTextApp.utils.database import SQL_request as SQL
 
 
 def get_cities(tta):
@@ -26,6 +26,20 @@ def get_pos(tta):
 def get_user(tta):
     data = request("/api/aggregator/customer/", TOKEN=tta.user.token)
     return data
+
+
+def authorize(tta):
+    print(tta)
+    if tta.phone_number:
+        if tta.phone_number.startswith("8"):
+            tta.phone_number = "7" + tta.phone_number[1:]
+        if tta.phone_number.startswith("+"):
+            tta.phone_number = tta.phone_number[1:]
+        SQL(
+            "UPDATE TTA SET phone_number = ? WHERE telegram_id = ?",
+            (tta.phone_number, tta.user.telegram_id),
+        )
+        return {"keyboard": {"authorization_check": f"+{tta.phone_number}"}}
 
 
 def check_number(tta):
