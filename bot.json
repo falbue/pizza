@@ -1,0 +1,89 @@
+{
+    "bot": {
+        "name": "Пицца",
+        "short_description": "Бот использует API пиццерии Eepizza для заказа пиццы и другой еды. Создан на основе Telegram Text App",
+        "description": "Здесь вы можете заказать вкусную пиццу и другую еду из пиццерии Eepizza. Бот позволяет просматривать меню, выбирать блюда, оформлять заказы и управлять своим профилем. Наслаждайтесь удобным способом заказа еды прямо из Telegram!",
+        "username": "falbue_test_bot",
+        "id": 7081992478
+    },
+    "menu": {
+        "main": {
+            "text": "Добро пожаловать в Пицца Бот! Выберите действие:",
+            "function": "check_token",
+            "keyboard": {
+                "shop|None": "Пиццерия",
+                "profile": "Профиль"
+            }
+        },
+        "profile": {
+            "loading": " Загрузка профиля...",
+            "text": "*Ⓜ️ Бонусы:* {get_user.bonuses} 🪙\n*📞 Номер телефона:* `+{user.phone_number}`\n\n*🏠 Адрес:* {get_user.address}\n",
+            "function": "get_user",
+            "return": "main"
+        },
+        "shop|{category_id}": {
+            "loading": "Ищем еду...",
+            "row": 8,
+            "pagination": 18,
+            "text": "Добро пожаловать в пиццерию!",
+            "keyboard": {
+                "function": "get_foods"
+            },
+            "return": "main"
+        },
+        "product|{category_id}|{product_id}|{size}": {
+            "row": 3,
+            "loading": " Загрузка товара...",
+            "text": "*{get_product.name} - {get_product.price}₽*\n\n*📃 Описание:*\n>{get_product.description}\n\n📊 *КБЖУ:*\n**>{get_product.info_KBZHU}||\n\n",
+            "function": "get_product",
+            "return": "shop|{category_id}"
+        },
+        "authorization": {
+            "text": "Введите номер телеофона для авторизации",
+            "function": "check_number",
+            "input": {
+                "data": "phone_number",
+                "menu": "authorization_check",
+                "function": "authorize"
+            },
+            "return": "main"
+        },
+        "authorization_check": {
+            "loading": " Проверка авторизации...",
+            "row": 1,
+            "text": "Перейдите в бота @Eepizzaru\\_bot и поделитесь своим номером телефона для авторизации",
+            "function": "check_authorization",
+            "keyboard": {
+                "url:https://t.me/Eepizzaru_bot?start=start": "Перейти к боту",
+                "authorization_check": "Проверить авторизацию"
+            },
+            "return": "main"
+        },
+        "cities": {
+            "row": 1,
+            "loading": " Загрузка городов...",
+            "text": "Выберите город:",
+            "keyboard": "get_cities",
+            "return": "main"
+        },
+        "pos|{city_id}": {
+            "loading": " Загрузка пиццерии...",
+            "text": "*Город:* {get_pos.name}\n*Адрес:* {get_pos.address}\n\n*Телефон:* {get_pos.phone}\n*Рабочие часы:* {get_pos.working_time_start} - {get_pos.working_time_end}",
+            "function": "get_pos",
+            "return": "cities"
+        }
+    },
+    "variables": {
+        "tta_return": "‹ Назад",
+        "tta_loading": "Загрузка...",
+        "tta_pagination_back": "‹",
+        "tta_pagination_next": "›",
+        "tta_notification": "Прочитано ✅"
+    },
+    "commands": {
+        "start": {
+            "description": "🔄 Перезапуск бота",
+            "menu": "main"
+        }
+    }
+}
