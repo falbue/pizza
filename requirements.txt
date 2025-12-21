@@ -1,1 +1,2 @@
 TelegramTextApp==0.7.4
+requests
